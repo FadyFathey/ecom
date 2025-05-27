@@ -1,0 +1,46 @@
+<!-- src/app/components/product/product.component.html -->
+<div class="products-container">
+  <div class="header-section">
+    <h1 class="page-title">Our Amazing Animals</h1>
+    <p class="page-subtitle">Discover our collection of beautiful animal companions</p>
+  </div>
+
+  <div class="products-grid" *ngIf="products.length > 0">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-image-container">
+        <img
+          [src]="'assets/images/' + product.image_url"
+          [alt]="product.name"
+          class="product-image"
+          (error)="onImageError($event)"
+        >
+        <div class="product-overlay">
+          <button class="quick-view-btn">Quick View</button>
+        </div>
+      </div>
+
+      <div class="product-info">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <div class="product-price">
+          <span class="currency">$</span>
+          <span class="amount">{{ product.price }}</span>
+        </div>
+
+        <div class="product-actions">
+          <button class="add-to-cart-btn">
+            <span class="cart-icon">🛒</span>
+            Add to Cart
+          </button>
+          <button class="wishlist-btn" title="Add to Wishlist">
+            <span class="heart-icon">♥</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="products.length === 0">
+    <div class="spinner"></div>
+    <p>Loading amazing animals...</p>
+  </div>
+</div>

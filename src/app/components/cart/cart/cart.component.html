@@ -1,0 +1,135 @@
+<!-- src/app/components/cart/cart.component.html -->
+<div class="cart-container">
+  <div class="cart-header">
+    <h1 class="cart-title">
+      <span class="cart-icon">🛒</span>
+      Your Shopping Cart
+    </h1>
+    <p class="cart-subtitle" *ngIf="cartItems.length > 0">
+      {{ cartItems.length }} {{ cartItems.length === 1 ? "item" : "items" }} in
+      your cart
+    </p>
+  </div>
+
+  <!-- Empty Cart State -->
+  <div class="empty-cart" *ngIf="cartItems.length === 0">
+    <div class="empty-cart-icon">🛒</div>
+    <h2 class="empty-cart-title">Your cart is empty</h2>
+    <p class="empty-cart-message">
+      Looks like you haven't added any animals to your cart yet.
+    </p>
+    <button class="continue-shopping-btn" routerLink="/products">
+      <span class="shop-icon">🐾</span>
+      Continue Shopping
+    </button>
+  </div>
+
+  <!-- Cart Items -->
+  <div class="cart-content" *ngIf="cartItems.length > 0">
+    <div class="cart-items">
+      <div
+        class="cart-item"
+        *ngFor="let item of cartItems; trackBy: trackByProductId"
+      >
+        <div class="item-image-container">
+          <img
+            [src]="'assets/images/' + item.image_url"
+            [alt]="item.name"
+            class="item-image"
+            (error)="onImageError($event)"
+          />
+        </div>
+
+        <div class="item-details">
+          <h3 class="item-name">{{ item.name }}</h3>
+          <p class="item-id">Product ID: #{{ item.id }}</p>
+
+          <div class="item-controls">
+            <div class="quantity-controls">
+              <button
+                class="quantity-btn"
+                (click)="decreaseQuantity(item)"
+                [disabled]="getItemQuantity(item) <= 1"
+              >
+                <span class="minus-icon">−</span>
+              </button>
+              <span class="quantity-display">{{ getItemQuantity(item) }}</span>
+              <button class="quantity-btn" (click)="increaseQuantity(item)">
+                <span class="plus-icon">+</span>
+              </button>
+            </div>
+
+            <div class="item-price">
+              <span class="price-label">Price:</span>
+              <span class="price-amount">${{ item.price }}</span>
+            </div>
+          </div>
+
+          <div class="item-total">
+            <span class="total-label">Total:</span>
+            <span class="total-amount">${{ getItemTotal(item) }}</span>
+          </div>
+        </div>
+
+        <div class="item-actions">
+          <button
+            class="remove-btn"
+            (click)="removeFromCart(item.id)"
+            title="Remove from cart"
+          >
+            <span class="remove-icon">🗑️</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary">
+      <div class="summary-card">
+        <h3 class="summary-title">Order Summary</h3>
+
+        <div class="summary-row">
+          <span class="summary-label"
+            >Subtotal ({{ getTotalItems() }} items):</span
+          >
+          <span class="summary-value">${{ getSubtotal() }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-label">Shipping:</span>
+          <span class="summary-value shipping-free">Free</span>
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-label">Tax:</span>
+          <span class="summary-value">${{ getTax() }}</span>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row total-row">
+          <span class="summary-label total-label">Total:</span>
+          <span class="summary-value total-value">${{ getTotal() }}</span>
+        </div>
+
+        <div class="summary-actions">
+          <button
+            class="clear-cart-btn"
+            (click)="clearCart()"
+            *ngIf="cartItems.length > 0"
+          >
+            Clear Cart
+          </button>
+          <button class="checkout-btn">
+            <span class="checkout-icon">💳</span>
+            Proceed to Checkout
+          </button>
+        </div>
+
+        <button class="continue-shopping-link" routerLink="/products">
+          ← Continue Shopping
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
