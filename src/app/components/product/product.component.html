@@ -2,7 +2,9 @@
 <div class="products-container">
   <div class="header-section">
     <h1 class="page-title">Our Amazing Animals</h1>
-    <p class="page-subtitle">Discover our collection of beautiful animal companions</p>
+    <p class="page-subtitle">
+      Discover our collection of beautiful animal companions
+    </p>
   </div>
 
   <div class="products-grid" *ngIf="products.length > 0">
@@ -13,7 +15,7 @@
           [alt]="product.name"
           class="product-image"
           (error)="onImageError($event)"
-        >
+        />
         <div class="product-overlay">
           <button class="quick-view-btn">Quick View</button>
         </div>
@@ -27,13 +29,41 @@
         </div>
 
         <div class="product-actions">
-          <button class="add-to-cart-btn">
-            <span class="cart-icon">🛒</span>
-            Add to Cart
+          <button
+            class="add-to-cart-btn"
+            [class.loading]="isAddingToCart(product.id)"
+            [class.success]="isAddedToCart(product.id)"
+            [disabled]="isAddingToCart(product.id)"
+            (click)="addToCart(product)"
+          >
+            <span
+              *ngIf="!isAddingToCart(product.id) && !isAddedToCart(product.id)"
+              class="cart-icon"
+              >🛒</span
+            >
+            <span
+              *ngIf="isAddingToCart(product.id)"
+              class="loading-spinner"
+            ></span>
+            <span *ngIf="isAddedToCart(product.id)" class="success-icon"
+              >✓</span
+            >
+
+            <span
+              *ngIf="!isAddingToCart(product.id) && !isAddedToCart(product.id)"
+              >Add to Cart</span
+            >
+            <span *ngIf="isAddingToCart(product.id)">Adding...</span>
+            <span *ngIf="isAddedToCart(product.id)">Added!</span>
           </button>
           <button class="wishlist-btn" title="Add to Wishlist">
             <span class="heart-icon">♥</span>
           </button>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions" *ngIf="isAddedToCart(product.id)">
+          <button class="view-cart-btn" (click)="goToCart()">View Cart</button>
         </div>
       </div>
     </div>
