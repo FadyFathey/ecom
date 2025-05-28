@@ -58,7 +58,7 @@ export class ProductComponent implements OnInit {
 
         // You could show an error message here
         alert('Failed to add product to cart. Please try again.');
-      }
+      },
     });
   }
 
